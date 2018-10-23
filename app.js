@@ -7,8 +7,8 @@ const static = require('serve-static');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const flash = require('flash');
-const localStrategy = require('passport-local').Strategy;
+// const flash = require('flash');
+// const localStrategy = require('passport-local').Strategy;
 const expressSession = require('express-session');
 const cookieParser = require('cookie-parser');
 const User = require('./database/User.js');
@@ -18,15 +18,15 @@ app.use('/public', static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-app.use(expressSession({
-    secret:'my key',
-    resave:true,
-    saveUninitialized:true
-}));
+// app.use(expressSession({
+//     secret:'my key',
+//     resave:true,
+//     saveUninitialized:true
+// }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use(passportSetup())
+
 app.use('/process', routes)
 
 

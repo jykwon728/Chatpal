@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const app = express();
 const passport = require('passport');
-const localStrategy = require('passport-local').Strategy;
+
+// const localStrategy = require('passport-local').Strategy;
 
 const User = require('./database/User.js');
 
@@ -71,6 +72,7 @@ router.route('/signup').post(function(req, res) {
               console.log("사용자 데이터 추가함.", addedUser);
               res.send(addedUser)
           });
+          res.redirect('/public/login.html')
         }
       }
     })
