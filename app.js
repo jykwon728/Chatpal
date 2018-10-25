@@ -7,13 +7,20 @@ const static = require('serve-static');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const keys = require('./keys');
 // const flash = require('flash');
 // const localStrategy = require('passport-local').Strategy;
 const expressSession = require('express-session');
 const cookieParser = require('cookie-parser');
 const User = require('./database/User.js');
 const passportSetup = require('./database/passport-setup');
+const cookieSession = require('cookie-session');
 
+
+app.use(cookieSession({
+  maxAge: 24 * 60 * 60 * 1000,
+  keys: [keys.session.cookieKey]
+}))
 app.use('/public', static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -27,8 +34,9 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/process', routes)
 
+app.use('/process', routes)
+app.use('/', routes);
 
 
 
@@ -38,7 +46,7 @@ var database ={};
 
 function connectDB() {
     // 데이터베이스 연결 정보
-    var databaseUrl = 'mongodb://localhost:27017/local';
+    var databaseUrl = keys.mongodb.dbURI;
 
     // 데이터베이스 연결
     console.log('데이터베이스 연결을 시도합니다.');
@@ -52,7 +60,7 @@ function connectDB() {
     });
 }
 
-app.use('/', routes);
+
 // 서버열기
 app.listen(3000, function(){
   console.log('you are connected to port 3000');
