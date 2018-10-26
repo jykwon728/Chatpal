@@ -12,7 +12,6 @@ router.route('/').get(function(req, res){
 })
 
 router.route('/login').post(passport.authenticate('local-login', {
-                                        successRedirect:'/',
                                         failureRedirect: '/public/login.html'}),
     function(req, res){
       console.log('/process/login 호출됨.');
@@ -20,7 +19,7 @@ router.route('/login').post(passport.authenticate('local-login', {
       // 요청 파라미터 확인
       var email = req.body.email || req.query.email;
       var password = req.body.password || req.query.password;
-      res.write('<h2>here is your info!</h2>')
+      res.send('<h2>here is your info!</h2>'+req.user.name)
       // res.write('<p>'+email+'</p>')
       console.log('요청 파라미터 : ' + email + ', ' + password);
       return router;
@@ -86,14 +85,10 @@ router.get('/google', passport.authenticate('google',{
 
 //callback to redirect
 router.get('/google/redirect',  passport.authenticate('google'),function(req,res){
-  res.send('welcome! '+ req.user.name)
+  res.redirect('/profile/')
 }
-// ,{
-//   failureRedirect: '/login'}),
-// function(req, res){
-//   res.redirect('/');
-// }
 );
+
 //사용자 리스트 함수
 // router.route('/process/listuser').post(function(req, res) {
 //     console.log('/process/listuser 호출됨.');
