@@ -16,12 +16,13 @@ const User = require('./database/User.js');
 const passportSetup = require('./database/passport-setup');
 const cookieSession = require('cookie-session');
 
-
+app.set('view engine', 'ejs')
 app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000,
   keys: [keys.session.cookieKey]
 }))
-app.use('/public', static(path.join(__dirname, 'public')));
+
+// app.use('/public', static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
