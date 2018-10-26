@@ -24,8 +24,9 @@ app.use(cookieSession({
   keys: [keys.session.cookieKey]
 }))
 
-// app.use('/public', static(path.join(__dirname, 'public')));
+app.use('/static', static(path.join(__dirname, 'static')));
 app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, "/static/js")));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 // app.use(expressSession({

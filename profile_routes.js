@@ -17,25 +17,49 @@ const authCheck = (req,res,next)=>{
 
 router.get('/', authCheck, function(req,res){
 
+  // var foundVideos = [];
+  // videos.find({}, function(err, videos){
+  //   // console.log('found videos in DB! : '+ videos);
+  //   if(videos){
+  //     videos.forEach(function(video){
+  //       foundVideos = video;
+  //       // foundVideos = video
+  //       console.log('these are the foundvideos :: ' + foundVideos);
+  //
+  //       res.render('pages/profile', {videos: foundVideos, CurrentUser: req.user.name})
+  //       return foundVideos;
+  //     })
+  //   }else{
+  //     console.log('no video was put into foundVideo Object');
+  //   }
+  //     });
+
+  res.render('pages/profile', {CurrentUser: req.user.name})
+})
+
+router.get('/loadVideo',function(req, res, next){
+  console.log('loadVideo is working');
   var foundVideos = [];
   videos.find({}, function(err, videos){
     // console.log('found videos in DB! : '+ videos);
     if(videos){
-      videos.forEach(function(video){
-        foundVideos = video;
-        // foundVideos = video
-        console.log('these are the foundvideos :: ' + foundVideos);
-        res.render('pages/profile', {videos: foundVideos, CurrentUser: req.user.name})
-        return foundVideos;
-      })
+      console.log('these are the loaded videos: ' + videos);
+      foundVideos = {...videos};
+      console.log('these are the foundvideos :: ' + foundVideos);
+      res.json(foundVideos);
     }else{
-      console.log('no video was put into foundVideo Object');
-    }
-      });
+            console.log('no video was put into foundVideo Object');
+          }
 
-  // res.render('pages/profile', {videos: foundVideos, CurrentUser: req.user.name})
+    //   videos.forEach(function(video){
+    //     foundVideos = video;
+    //     // foundVideos = video
+    //     console.log('these are the foundvideos :: ' + foundVideos);
+    //     res.json(foundVideos);
+    //   })
+    // }else{
+    //     console.log('no video was put into foundVideo Object');
+    //   }
+        });
 })
-
-// router.get('/profile/submitEssay'),function(req, res, next){
-// }
 module.exports = router;
