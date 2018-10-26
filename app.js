@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
+const ejs = require('ejs');
 // const schema = require('./schema.js');
 const routes = require('./app_routes.js');
+const profileRoutes = require('./profile_routes.js');
 const app = express();
 const static = require('serve-static');
 const bodyParser = require('body-parser');
@@ -16,7 +18,7 @@ const User = require('./database/User.js');
 const passportSetup = require('./database/passport-setup');
 const cookieSession = require('cookie-session');
 
-app.set('view engine', 'ejs')
+
 app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000,
   keys: [keys.session.cookieKey]
@@ -35,8 +37,9 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+app.set('view engine', 'ejs')
 app.use('/process', routes)
+app.use('/profile', profileRoutes)
 app.use('/', routes);
 
 

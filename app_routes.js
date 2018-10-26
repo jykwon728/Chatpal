@@ -8,7 +8,7 @@ const passport = require('passport');
 const User = require('./database/User.js');
 
 router.route('/').get(function(req, res){
-  res.write('<h1>this is the root page!</h1>')
+  res.render('pages/home.ejs')
 })
 
 router.route('/login').post(passport.authenticate('local-login', {
@@ -85,6 +85,7 @@ router.get('/google', passport.authenticate('google',{
 
 //callback to redirect
 router.get('/google/redirect',  passport.authenticate('google'),function(req,res){
+// res.send(req.user)
   res.redirect('/profile/')
 }
 );

@@ -16,13 +16,29 @@ const mongoose = require('mongoose');
 //passport related stuff
 
 passport.serializeUser(function(user, done){
+  console.log('serialze is launced with user: '+ user)
   done(null, user.id)
 })
 passport.deserializeUser(function(id, done){
-  User.findById(id).then((user)=>{
-    done(null, user)
+  googleUser.findById(id).then((user)=>{
+    console.log('deserialze is launched with user: '+ user);
+    done(null,user);
   })
-});
+})
+//고치기! deserialize는 db 에서 유저를 찾는데 User db 와 googleUser db 중 한가지에서만 찾고있음
+// passport.deserializeUser(function(id, done){
+//   User.findById(id).then((user)=>{
+//     if(!user){
+//       googleUser.findById(id).then((user)=>{
+//         console.log('deserialze is launched with user: '+ user);
+//         done(null,user);
+//       })
+//     }else{
+//       console.log('deserialze is launched with user: '+ user);
+//       done(null, user);
+//     }
+//   })
+// });
 
   passport.use('local-login', new localStrategy({
   usernameField: 'email',
