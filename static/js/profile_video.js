@@ -11,7 +11,7 @@ window.onload = function bringvideos(){
     for(var i=0; i<videoLength; i++){
       $("#videoSelector").append(
         "<div id=videoNo"+i+
-          " class=video-thumbnail-holder data-ga-videoid="+video[i]+"></div>")
+          " class=video-thumbnail-holder data-ga-videoid="+video[i].vidId+"></div>")
 
       var imgurl = "https://img.youtube.com/vi/"+video[i].vidId+"/sddefault.jpg"
       console.log(imgurl)
@@ -24,7 +24,7 @@ window.onload = function bringvideos(){
     $("#videoNo"+i+"").on('click', function(){
         const id = $(this).attr("data-ga-videoid");
         console.log(id);
-        var url = '../../templates/videoLesson.html?v='+id
+        var url = '/profile/watchVideo?id='+id
         console.log(url)
         window.location=url
     })

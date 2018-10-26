@@ -16,25 +16,7 @@ const authCheck = (req,res,next)=>{
 }
 
 router.get('/', authCheck, function(req,res){
-
-  // var foundVideos = [];
-  // videos.find({}, function(err, videos){
-  //   // console.log('found videos in DB! : '+ videos);
-  //   if(videos){
-  //     videos.forEach(function(video){
-  //       foundVideos = video;
-  //       // foundVideos = video
-  //       console.log('these are the foundvideos :: ' + foundVideos);
-  //
-  //       res.render('pages/profile', {videos: foundVideos, CurrentUser: req.user.name})
-  //       return foundVideos;
-  //     })
-  //   }else{
-  //     console.log('no video was put into foundVideo Object');
-  //   }
-  //     });
-
-  res.render('pages/profile', {CurrentUser: req.user.name})
+  res.render('pages/profile', {currentUser: req.user.name})
 })
 
 router.get('/loadVideo',function(req, res, next){
@@ -61,5 +43,12 @@ router.get('/loadVideo',function(req, res, next){
     //     console.log('no video was put into foundVideo Object');
     //   }
         });
+})
+
+router.get('/watchVideo', function(req,res){
+  //bring video script data
+  //bring user specific information
+  res.render('pages/watchVideo', {vidId:req.query.id, currentUser:req.user.name} );
+
 })
 module.exports = router;
