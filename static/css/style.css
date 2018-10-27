@@ -1,0 +1,7 @@
+.script-place-holder{
+  height: 200px;
+  width: 800px;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+}

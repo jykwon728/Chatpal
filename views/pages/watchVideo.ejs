@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <% include ../partials/head %>
+    <link rel=stylesheet href="../../static/css/style.css"></link>
 </head>
 <body class="container">
 
@@ -21,9 +22,7 @@
       </div>
     </div>
     <div id="scriptWrapper" class="script-wrapper">
-      <div id="scriptPlaceholder" class="script-scriptholder">
-        <p>script should be here</p>
-
+      <div id="scriptPlaceholder" class="script-place-holder">
       </div>
     </div>
 </main>
@@ -55,7 +54,7 @@ function onYouTubeIframeAPIReady() {
     });
 }
 var loadedScript = <%- JSON.stringify(script) %>
-var scriptFile = [loadedScript[0].script]
+var scriptFile = [loadedScript[0].script] //fix this[0]
 console.log(loadedScript)
 console.log('this is scriptfile '+ scriptFile)
 console.log(scriptFile.length)
@@ -63,7 +62,7 @@ var scriptFileArray = [...scriptFile[0]]
 console.log('this is the script array', scriptFileArray, scriptFileArray.length)
  for(i=0; i<scriptFileArray.length; i++){
 console.log('for loop is working')
- $("#scriptPlaceholder").append("<div id=scriptSent"+i+" class=script-sent> </div>")
+ $("#scriptPlaceholder").append("<div id=scriptSent"+i+" class=script-sent> </div> <br />")
  $("#scriptSent"+i).text(scriptFileArray[i].content)
 }
 </script>
