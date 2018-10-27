@@ -4,7 +4,7 @@ const app = express();
 const passport = require('passport');
 const mongoose = require('mongoose');
 const videos = require('./database/videos');
-
+const scripts = require('./database/Scripts');
 const authCheck = (req,res,next)=>{
   if(!req.user){
     res.redirect('/auth/login');
@@ -47,8 +47,23 @@ router.get('/loadVideo',function(req, res, next){
 
 router.get('/watchVideo', function(req,res){
   //bring video script data
+  var vidId = req.query.id
+  var foundScript = {}
+  console.log(vidId);
+  scripts.find({vidId:vidId}, '-_id script', function(err, script){
+    if(err){
+      console.log(err);
+      res.send(err)
+    }else{
+      console.log('this is the loadedscript', script);
+      res.render('pages/watchVideo', {vidId:req.query.id, currentUser:req.user.name, script:script} );
+  }
+
+  }
+)
   //bring user specific information
-  res.render('pages/watchVideo', {vidId:req.query.id, currentUser:req.user.name} );
+
+
 
 })
 module.exports = router;

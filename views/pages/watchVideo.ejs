@@ -11,7 +11,6 @@
 
 <main>
     <div class="jumbotron">
-        <h1>Chat-Pal</h1>
         <h3>Welcome <%= currentUser %></h3>
         <p>lesson page</p>
     </div>
@@ -21,12 +20,18 @@
 
       </div>
     </div>
+    <div id="scriptWrapper" class="script-wrapper">
+      <div id="scriptPlaceholder" class="script-scriptholder">
+        <p>script should be here</p>
 
+      </div>
+    </div>
 </main>
 
 <footer>
     <% include ../partials/footer %>
 </footer>
+<script src="../../static/js/jquery-3.1.1.js"></script>
 <script>
 var player;
 function onYouTubeIframeAPIReady() {
@@ -44,15 +49,26 @@ function onYouTubeIframeAPIReady() {
 
         },
         events: {
-            // onReady: initialize,
-            // onStateChange: checkPause
+            onReady: console.log('youtube video is loaded'),
+            // onStateChange:
         }
     });
 }
-
+var loadedScript = <%- JSON.stringify(script) %>
+var scriptFile = [loadedScript[0].script]
+console.log(loadedScript)
+console.log('this is scriptfile '+ scriptFile)
+console.log(scriptFile.length)
+var scriptFileArray = [...scriptFile[0]]
+console.log('this is the script array', scriptFileArray, scriptFileArray.length)
+ for(i=0; i<scriptFileArray.length; i++){
+console.log('for loop is working')
+ $("#scriptPlaceholder").append("<div id=scriptSent"+i+" class=script-sent> </div>")
+ $("#scriptSent"+i).text(scriptFileArray[i].content)
+}
 </script>
 <!-- <script src="../../static/js/profile_watch.js"></script> -->
-<script src="../../static/js/jquery-3.1.1.js"></script>
+
 <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
