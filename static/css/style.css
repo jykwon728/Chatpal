@@ -1,7 +1,71 @@
 .script-place-holder{
-  height: 200px;
-  width: 800px;
+  height: 250px;
+  width: 700px;
   overflow: scroll;
   overflow-x: hidden;
   overflow-y: auto;
+}
+.content-wrapper{
+  display:grid;
+  grid-template-columns: 0.5fr 3fr 0.1 2fr 0.5;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+  ". video . note ."
+  ". script . note ."
+}
+.video-wrapper{
+  grid-area: video;
+  height: 400px;
+  width: 700px;
+}
+.script-wrapper{
+  grid-area: script;
+}
+.note-wrapper{
+  grid-area: note;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.5fr 5fr;
+  grid-gap: 1px 1px;
+  grid-template-areas:
+    "exclamation question"
+    "point point"
+    ;
+}
+.note-place-holder{
+  grid-area: point;
+}
+
+.note-form{
+  /* display: grid;
+  width: 60%;
+  height: auto;
+  grid-template-collumns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 2em auto;
+  grid-template-areas:
+    "notetab notetab . . ."
+    ". word comment comment ." */
+
+
+}
+/* .note-content{
+  display: block;
+} */
+#noteContentWord{
+  display: block;
+}
+
+.input{
+  grid-area: word
+  font-family: verdana;
+  color: green;
+
+}
+
+.input-comment{
+  grid-area: comment
+  font-family: verdana;
+  color: red;
+
 }

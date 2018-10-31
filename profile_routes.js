@@ -9,7 +9,7 @@ const NotepadsWord = require('./database/notepad-WordsExpressions').words;
 const NotepadsExp = require('./database/notepad-WordsExpressions').expressions;
 const authCheck = (req,res,next)=>{
   if(!req.user){
-    res.redirect('/auth/login');
+    res.redirect('/');
     console.log('req.user is not found!');
   }else{
     console.log('the logged in user is...'+ req.user.name);

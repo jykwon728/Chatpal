@@ -17,8 +17,24 @@ const cookieParser = require('cookie-parser');
 const User = require('./database/User.js');
 const passportSetup = require('./database/passport-setup');
 const cookieSession = require('cookie-session');
+const Webclip = require('webclip');
 
-
+//weblcip functionality trying
+// let webclip = new Webclip(document.querySelector('.script-sent'))
+// let webclip = new Webclip(document.querySelector('#scriptPlaceholder'))
+//
+// const highlight = {
+//   name: 'highlight',
+//   description: 'Highlight content',
+//   action(value, range) {
+//     const $highlight = document.createElement('span')
+//     $highlight.style.backgroundColor = 'rgba(92,255,160,.5)'
+//     // or just add a class
+//     // $highlight.classList.add('your-class')
+//     range.surroundContents($highlight)
+//   }
+// }
+// webclip.use(highlight)
 
 app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000,
@@ -40,6 +56,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.set('view engine', 'ejs')
+
 app.use('/process', routes)
 app.use('/profile', profileRoutes)
 app.use('/', routes);

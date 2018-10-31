@@ -1,3 +1,5 @@
+
+
 var wordLearn = [];
 var wordCommentLearn = [];
 
