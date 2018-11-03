@@ -1,25 +1,25 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const noteWordSchema = new Schema({
+const noteLearnSchema = new Schema({
   user: {type: String},
   vidId: {type: String},
   word: {type: String},
-  comment: {type: String},
+  originSent: {type: String, default: "not given"},
   created_at: {type: Date, index: {unique: false}, 'default': Date.now}
 })
 
-const words = mongoose.model('notepad_word', noteWordSchema)
+const learn = mongoose.model('notepad_learn', noteLearnSchema)
 
-const noteExpressionSchema = new Schema({
+const noteWantSchema = new Schema({
   user: {type: String},
   vidId: {type: String},
-  expression: {type: String},
-  comment: {type: String},
+  word: {type: String},
+  comment: {type: String, default: "not given"},
   created_at: {type: Date, index: {unique: false}, 'default': Date.now}
 })
 
-const expressions = mongoose.model('notepad_expression', noteExpressionSchema)
+const want = mongoose.model('notepad_want', noteWantSchema)
 
-module.exports.words = words;
-module.exports.expressions = expressions;
+module.exports.learn = learn;
+module.exports.want = want;

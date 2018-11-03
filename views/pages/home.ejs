@@ -11,26 +11,32 @@
 
 <main>
     <div class="jumbotron">
-        <h1>Chat-Pal</h1>
+        <h1>The Orator club</h1>
         <p>Welcome to your English training center</p>
+
     </div>
 
-    <form method="post" action = "/process/login">
-        <table>
+    <form  method="post" action="/process/login">
+        <table class="form-getBoundingClientRect">
             <tr>
-                <td><label>email address</label></td>
-                <td><input type="text" name="email"/></td>
+                <td><label>이메일</label></td>
+                <td><input class="form-control mb-2 mr-sm-2" type="text" name="email"/></td>
             </tr>
             <tr>
                 <td><label>비밀번호</label></td>
-                <td><input type="password" name="password"/></td>
+                <td><input class="form-control mb-2 mr-sm-2" type="password" name="password"/></td>
             </tr>
 
         </table>
-    <input type="submit" value="전송">
+    <input class="btn btn-outline-primary" type="submit" value="로그인">
+
     </form>
-    <a href="./adduser.html">회원가입</a>
-    <a class="google-btn" href="/process/google">Google+</a>
+
+    <a class="btn btn-outline-success" href="/process/google">Google 계정으로 로그인</a>
+    <br />
+
+    <button class="btn btn-outline-info" href="./adduser.html">회원가입</button>
+
 
 </main>
 

@@ -12,11 +12,14 @@
 <body class="container">
 
 <header>
-    <% include ../partials/header %>
+    <!-- <% include ../partials/header %> -->
 </header>
 
 <main>
   <div id="contentWrapper" class="content-wrapper">
+    <div id="controlWrapper" class="control-wrapper">
+      <button id="submitButton" class="btn btn-primary submit-button">단어장 확인</button>
+    </div>
     <div id="videoWrapper" class="video-wrapper">
       <div id="videoPlaceholder">
 
@@ -24,30 +27,27 @@
     </div>
 
     <div id="scriptWrapper" class="script-wrapper">
-      <div id="scriptPlaceholder" class="script-place-holder">
+      <div id="scriptPlaceholder" class="script-place-holder text-justify">
       </div>
     </div>
-    <div id="noteWrapper" class="note-wrapper">
-      <div id="notePlaceholder" class="note-place-holder">
-        <form autocomplete="off" accept-charset="UTF-8" onsubmit=""  action="/profile/watchVideo/note" method="post" id="noteForm" class="note-form">
-
-          <div id='noteContent'></div>
-          <div id='noteControls'>
-            <!-- <button id="newWordButton" class="new-word-button">new word</button>
-            <button id="newExpressionButton" class="new-expression-button">new expression</button> -->
-            <input id="submitButton" type="submit" onclick="myFunction()" class="submit" value="Submit" />
-            <input type="hidden" id="vidIdfromQuery" value= <%=vidId%> name = "vidId"/>
-          </div>
-  </form>
+    <div id="noteWrapper" class="note-wrapper container">
+      <form class="note-form" autocomplete="off" accept-charset="UTF-8" onsubmit=""  action="/profile/watchVideo/note" method="post" id="noteForm" >
+        <div id='noteContent' class="note-content">
+        </div>
+        <div id='noteControls' class="note-controls">
+          <!-- <button id="newWordButton" class="new-word-button">new word</button>
+          <button id="newExpressionButton" class="new-expression-button">new expression</button> -->
+          <input type="hidden" id="submitFormButton" type="submit" onclick="myFunction()" class="submit" value="Submit" />
+          <input type="hidden" id="vidIdfromQuery" value= <%=vidId%> name = "vidId"/>
+        </div>
+      </form>
   <br/>
-
-      </div>
     </div>
   </div id="contentWrapper">
 </main>
 
 <footer>
-    <% include ../partials/footer %>
+    <!-- <% include ../partials/footer %> -->
 </footer>
 
 <script src="../../static/js/jquery-3.1.1.js"></script>
@@ -57,8 +57,8 @@
   var player;
   function onYouTubeIframeAPIReady() {
       player = new YT.Player('videoPlaceholder', {
-          width: 700,
-          height: 400,
+          width: 650,
+          height: 300,
           videoId: '<%= vidId %>',
           playerVars: {
               autoplay: 0,
@@ -83,22 +83,21 @@
 
 function makeScript(){
   for(i=0; i<scriptFileArray.length; i++){
-    $("#scriptPlaceholder").append("<div id=scriptSent"+i+" class=script-sent time="+scriptFileArray[i].startTime+"> </div> <br />")
+    $("#scriptPlaceholder").append("<p id=scriptSent"+i+" class= m-3  text-justify script-sent time="+scriptFileArray[i].startTime+"> </p> <br />")
     $("#scriptSent"+i).text(scriptFileArray[i].content)
    }
 }
 
-
 //function to skip to line's time
-  $(".script-sent").on("click",function(){
+$(".script-sent").on("click",function(){
     player.seekTo($(this).attr('time'))
-$("#submitButton").on("click", function(){
-  console.log(wordLearn)
-  console.log(wordCommentLearn)
+  })
+
+$("#submitButton").on("click",function(){
+  console.log('submit button clicked')
+  $("#noteForm").submit()
 })
 
-
-  })
 </script>
 
 <script>
@@ -106,36 +105,40 @@ var keyData = {};
 var learnData = {};
 var wantData = {};
 
+//make a fucntion that bolds the key sentences
+
 const pointKey = {
   name: 'highlight',
   description: 'Highlight content',
   action: function(value, range) {
 
     const $highlight = document.createElement('span')
-    $highlight.style.backgroundColor = 'rgba(92,255,160,.7)'
+    $highlight.style.backgroundColor = 'rgba(0,0,0,.3)'
     // or just add a class
     // $highlight.classList.add('your-class')
     range.surroundContents($highlight)
     keyData = value
     console.log('this is key: ' + keyData)
+    // $("#noteContent").append('<input id=key-input class=list-group-item active name=wordLearn value="'+keyData+'"></input>')
+
 
   }
 }
 
 const pointLearn = {
-  name: 'pointLearn',
+  name: '?pointLearn',
   description: 'Highlight and save to learn',
-  icon: 'question-circle',
+  // icon: 'question',
   action: function(value, range) {
 
     const $highlight = document.createElement('span')
-    $highlight.style.backgroundColor = 'rgba(255, 245, 157,.9)'
+    $highlight.style.backgroundColor = 'rgba(199, 32, 63,.5)'
     // or just add a class
     // $highlight.classList.add('your-class')
     range.surroundContents($highlight)
     //append input element into note contentWrapper
-      $("#noteContent").append("<input id=word-input class=input name=wordLearn value="+value+"></input>")
-      $("#noteContent").append("<input id=comment-input class=input-comment name=wordCommentLearn placeholder=leave your comment></input>")
+    $("#noteContent").append('<input id=word-input class=note-learn input-group-sm name=wordLearn value="'+value+'"></input>')
+      // $("#noteContent").append("<input id=comment-input class=input-comment name=wordCommentLearn placeholder=leave your comment></input>")
 
     // learnData = value
     // console.log('this is learn: ' + learnData)
@@ -143,17 +146,18 @@ const pointLearn = {
   }
 }
 const pointWant = {
-  name: 'pointWant',
+  name: '!pointWant',
   description: 'Highlight and save to want',
   action: function(value, range) {
 
     const $highlight = document.createElement('span')
-    $highlight.style.backgroundColor = 'rgba(255, 156, 173,.3)'
+    $highlight.style.backgroundColor = 'rgba(51, 105, 195,.3)'
     // or just add a class
     // $highlight.classList.add('your-class')
     range.surroundContents($highlight)
-    learnWant = value
-    console.log('this is want: ' + learnWant)
+    //append input element into note contentWrapper
+    $("#noteContent").append('<input id=word-input class=note-want list-group-item active name=wordWant value="'+value+'"></input>')
+
 
   }
 }

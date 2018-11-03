@@ -12,8 +12,11 @@
 <main>
     <div class="jumbotron">
         <h1>notepad</h1>
-    </div>
 
+    </div>
+<div id="cardDeckWrapper" class="card-deck-wrapper">
+  <div id="cardDeckHolder" class="card-deck"></div>
+</div>
 
 
 
@@ -22,6 +25,15 @@
 <footer>
     <% include ../partials/footer %>
 </footer>
-
+<script src="http://unirest.io/nodejs"></script>
+<script>
+  var learnWords = <%-JSON.stringify(learnWords)%>
+  var wantWords = <%-JSON.stringify(wantWords)%>
+  // var wantWords = <%=wantWords%>
+console.log(wantWords)
+console.log('learnWords ', learnWords)
+  //
+</script>
+<script src="../../static/js/word_note.js"></script>
 </body>
 </html>
