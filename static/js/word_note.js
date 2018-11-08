@@ -1,6 +1,3 @@
-console.log(wantWords)
-// console.log(wantWords.length)
-// var card =
 
 for(i=0;i<learnWords.length;i++){
   $("#cardDeckHolder").append('<div class=card><div class=card-header>learn</div><div class=card-body><h4 class="card-text">'+learnWords[i]+'</h4></div>')
