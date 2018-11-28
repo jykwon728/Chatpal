@@ -18,7 +18,7 @@
   <div id="cardDeckHolder" class="card-deck"></div>
 </div>
 
-<div id="wordApi"><%= learnWordsApi %></div>
+
 
 </main>
 
@@ -29,13 +29,11 @@
 <script>
   var learnWords = <%-JSON.stringify(learnWords)%>
   var wantWords = <%-JSON.stringify(wantWords)%>
-  var synLearn = <%=learnWordsApi%>
-  // <%-JSON.stringify(learnWordsApi)%>
-  // var wantWords = <%=wantWords%>
+  var learnSyn = <%-JSON.stringify(LearnWordsApi)%>
 console.log(wantWords)
 console.log('learnWords ', learnWords)
-console.log('syn of learn: ', synLearn)
-  //
+console.log('learnWordsSyn ', learnSyn)
+
 </script>
 <script src="../../static/js/word_note.js"></script>
 </body>

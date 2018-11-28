@@ -138,39 +138,115 @@ router.post('/watchVideo/note', authCheck, function(req, res){
   var LearnApiSyn;
   var LearnApiSim;
 
-  var options = {
-    url:'https://wordsapiv1.p.mashape.com/words/'+learnWord,
-    headers: {"X-Mashape-Key": "bxoznfiBCSmshLr3CezINnY0jFGLp15gEOJjsnYZGWISg5pAN7", "X-Mashape-Host": "wordsapiv1.p.mashape.com"}
-  }
-
-  request(options, function(error, response, body){
-      if(error){console.log(error)}
-      else{
-        console.log(body)
-        WordsApiLearn = JSON.parse(body); //this is necessary because Body returns as a string not an object
-        LearnApiSyn = WordsApiLearn.results[0].synonyms
-        LearnApiSim = WordsApiLearn.results[0].similarTo
-        console.log('this is LearnApiSyn word: ' + LearnApiSyn[0] + " type is: "+ typeof(LearnApiSyn) + "the length is: " + LearnApiSyn.length)
-
-//WordsApiLearn.results.synonyms Array should be compared with the user's database of learned words
-        NotepadsLearn.find({$and: [{user: req.user.id},
-                                   {word: LearnApiSyn}]}, function(err, result){
-                                     if(err){
-                                       console.log('this is error from finding syn: ', err)
-                                     }else{
-                                       console.log('this is the result of finding match synonym: ', result)
-                                       res.render('./pages/notepad', {learnWords: Learn, wantWords: Want, learnWordsApi: LearnApiSyn })
-                                     }
-
-                                   })
+  var promises = [];
+  let getDict = function(word){
+    return new Promise(function(resolve, reject){
+      let options = {
+        url:'https://wordsapiv1.p.mashape.com/words/' + word,
+        headers: {"X-Mashape-Key": "bxoznfiBCSmshLr3CezINnY0jFGLp15gEOJjsnYZGWISg5pAN7", "X-Mashape-Host": "wordsapiv1.p.mashape.com"}
       }
 
+      request(options, function(error, response, body){
+        if(body){
+          try{
+            let result = JSON.parse(body);//this is necessary because Body returns as a string not an object
+            resolve(result); //later, a loop of this through all results happens
+          }catch(ex){
+            reject(ex)
+          }
+        }else{
+          console.error()
+        }
+      })
+    })
+  };
+  //stores the returned 'everythin' data for each LearnWords into promises array
+  for(let i=0; i<Learn.length; i++){
+    promises.push(getDict(Learn[i]))
+  }
+  //execute every promises
+  Promise.all(promises)
+  .then(function(result){
+    console.log('this is the result of promise getDict: ', result)
+    WordData = getEachWordData(result) //LearnApiSyn should be an array of objects including a dictionary of word, syn array, similar arrays
   })
+  //include db checking function use find $all
+  .then(function(){
+    console.log('this is the WordData: ', WordData)
+    res.render('./pages/notepad', {learnWords: Learn, wantWords: Want, LearnWordsApi: WordData})
+  });
 
 
 
-})
+  //this loop pushes needed dictionary data into apiGroup Synonyms and SimilarTo
+  // const collectSynAndSim = function(res){
+  //   let apiGroup=[];
+  //   let apiResult = res.results
+  //   for(let i=0; i<apiResult.length; i++){
+  //     if(apiResult[i].synonyms !== undefined && apiResult[i].similarTo !== undefined){
+  //       apiGroup.push({synonyms: apiResult[i].synonyms, similar: apiResult[i].similarTo})
+  //     }else if(apiResult[i].synonyms === undefined && apiResult[i].similarTo !== undefined){
+  //       console.log('apiResult['+i+'] lacks synonym data')
+  //       apiGroup.push({similar: apiResult[i].similarTo})
+  //     }else if(apiResult[i].synonyms !== undefined && apiResult[i].similarTo === undefined){
+  //       console.log('apiResult['+i+'] lacks similarWord data')
+  //       apiGroup.push({synonyms: apiResult[i].synonyms})
+  //     }else{
+  //       console.log('apiResult['+i+'] lacks both synonym And similarWord data')
+  //     }
+  //   }
+  // return apiGroup
+  // }
 
+  const getEachWordData = function(array){
+    var result=[];
+    for(i=0;i<array.length;i++){
+      var foundWord = array[i].word
+      var foundResult = array[i].results
+      var foundApiResult=[];
+      console.log('this is foundResult: ', foundResult)
+      //push each result object's synonyms
+      for(a=0;a<foundResult.length;a++){
+        let newSyn = foundResult[a].synonyms; //problem!! this is returning a weird json array object that cannot be used properly
+        newSyn = JSON.parse(newSyn)
+        let newSim = foundResult[a].similarTo;
+        let synArray = [];
+        console.log('this is newSyn: ', newSyn, '  typeof newsyn: ',typeof(newSyn) )
+        // check if newSyn is an object(single) or an array(plural) and act accordingly
+        for(x=0;x<newSyn.length;x++){
+          synArray.push(newSyn[x]);
+        }
+        // function spread(newSyn){
+        //   synArray = newSyn
+        // }
+
+
+
+        // foundApiResult.push({synonym:newSyn, similarTo:newSim}) //this method retains the objest by definition and the according database
+        foundApiResult.push(synArray)
+      }
+      result.push({word:foundWord, apiResult: JSON.stringify(foundApiResult)})
+    }
+  console.log(result);
+  return result;
+  }
+
+//check with user's db
+
+
+//WordsApiLearn.results.synonyms Array should be compared with the user's database of learned words
+        // NotepadsLearn.find({$and: [{user: req.user.id},
+        //                            {word: LearnApiSyn}]}, function(err, result){
+        //                              if(err){
+        //                                console.log('this is error from finding syn: ', err)
+        //                              }else{
+        //                                console.log('this is the result of finding match synonym: ', result)
+        //                                res.render('./pages/notepad', {learnWords: Learn, wantWords: Want, learnWordsApi: LearnApiSyn })
+        //                              }
+        //
+        //                            })
+
+});
 
 
 

@@ -1,6 +1,6 @@
 
 for(i=0;i<learnWords.length;i++){
-  $("#cardDeckHolder").append('<div class=card><div class=card-header>learn</div><div class=card-body><h4 class="card-text">'+learnWords[i]+'</h4></div>')
+  $("#cardDeckHolder").append('<div class=card><div class=card-header>learn</div><div class=card-body><h4 class=card-text>'+learnWords[i]+'</h4></div> <div id=synonymCard'+i+' class=synonym-card>'+learnSyn[i]+'</div>')
 
 }
 
