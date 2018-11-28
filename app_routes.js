@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 const app = express();
 const passport = require('passport');
-const localStrategy = require('passport-local').Strategy;
+
+// const localStrategy = require('passport-local').Strategy;
 
 const User = require('./database/User.js');
 
 router.route('/').get(function(req, res){
-  res.write('<h1>this is the root page!</h1>')
+  res.render('pages/home.ejs')
 })
 
 router.route('/login').post(passport.authenticate('local-login', {
-                                        successRedirect:'/',
                                         failureRedirect: '/public/login.html'}),
     function(req, res){
       console.log('/process/login 호출됨.');
@@ -19,7 +19,8 @@ router.route('/login').post(passport.authenticate('local-login', {
       // 요청 파라미터 확인
       var email = req.body.email || req.query.email;
       var password = req.body.password || req.query.password;
-
+      res.send('<h2>here is your info!</h2>'+req.user.name)
+      // res.write('<p>'+email+'</p>')
       console.log('요청 파라미터 : ' + email + ', ' + password);
       return router;
     }
@@ -71,60 +72,72 @@ router.route('/signup').post(function(req, res) {
               console.log("사용자 데이터 추가함.", addedUser);
               res.send(addedUser)
           });
+          res.redirect('/public/login.html')
         }
       }
     })
 });
 
+router.get('/google', passport.authenticate('google',{
+  scope:['profile']
+})
+);
+
+//callback to redirect
+router.get('/google/redirect',  passport.authenticate('google'),function(req,res){
+// res.send(req.user)
+  res.redirect('/profile/')
+}
+);
 
 //사용자 리스트 함수
-router.route('/process/listuser').post(function(req, res) {
-    console.log('/process/listuser 호출됨.');
-
-    // 데이터베이스 객체가 초기화된 경우, 모델 객체의 findAll 메소드 호출
-    if (database) {
-        // 1. 모든 사용자 검색
-        UserModel.findAll(function(err, results) {
-            // 에러 발생 시, 클라이언트로 에러 전송
-            if (err) {
-                console.error('사용자 리스트 조회 중 에러 발생 : ' + err.stack);
-
-                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-                res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
-                res.write('<p>' + err.stack + '</p>');
-                res.end();
-
-                return;
-            }
-
-            if (results) {  // 결과 객체 있으면 리스트 전송
-                console.dir(results);
-
-                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-                res.write('<h2>사용자 리스트</h2>');
-                res.write('<div><ul>');
-
-                for (var i = 0; i < results.length; i++) {
-                    var curId = results[i]._doc.id;
-                    var curName = results[i]._doc.name;
-                    res.write('    <li>#' + i + ' : ' + curId + ', ' + curName + '</li>');
-                }
-
-                res.write('</ul></div>');
-                res.end();
-            } else {  // 결과 객체가 없으면 실패 응답 전송
-                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-                res.write('<h2>사용자 리스트 조회  실패</h2>');
-                res.end();
-            }
-        });
-    } else {  // 데이터베이스 객체가 초기화되지 않은 경우 실패 응답 전송
-        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-        res.write('<h2>데이터베이스 연결 실패</h2>');
-        res.end();
-    }
-
-});
+// router.route('/process/listuser').post(function(req, res) {
+//     console.log('/process/listuser 호출됨.');
+//
+//     // 데이터베이스 객체가 초기화된 경우, 모델 객체의 findAll 메소드 호출
+//     if (database) {
+//         // 1. 모든 사용자 검색
+//         UserModel.findAll(function(err, results) {
+//             // 에러 발생 시, 클라이언트로 에러 전송
+//             if (err) {
+//                 console.error('사용자 리스트 조회 중 에러 발생 : ' + err.stack);
+//
+//                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+//                 res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
+//                 res.write('<p>' + err.stack + '</p>');
+//                 res.end();
+//
+//                 return;
+//             }
+//
+//             if (results) {  // 결과 객체 있으면 리스트 전송
+//                 console.dir(results);
+//
+//                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+//                 res.write('<h2>사용자 리스트</h2>');
+//                 res.write('<div><ul>');
+//
+//                 for (var i = 0; i < results.length; i++) {
+//                     var curId = results[i]._doc.id;
+//                     var curName = results[i]._doc.name;
+//                     res.write('    <li>#' + i + ' : ' + curId + ', ' + curName + '</li>');
+//                 }
+//
+//                 res.write('</ul></div>');
+//                 res.end();
+//             } else {  // 결과 객체가 없으면 실패 응답 전송
+//                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+//                 res.write('<h2>사용자 리스트 조회  실패</h2>');
+//                 res.end();
+//             }
+//         });
+//     } else {  // 데이터베이스 객체가 초기화되지 않은 경우 실패 응답 전송
+//         res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+//         res.write('<h2>데이터베이스 연결 실패</h2>');
+//         res.end();
+//     }
+//
+// });
 
 
 // 라우터 객체 등록

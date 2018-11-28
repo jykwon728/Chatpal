@@ -10,15 +10,22 @@
   "license": "ISC",
   "dependencies": {
     "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "crypto": "^1.0.1",
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "flash": "^1.1.0",
+    "https": "^1.0.0",
     "mongodb": "^3.1.8",
     "mongoose": "^5.3.3",
     "nodemon": "^1.18.4",
     "passport": "^0.4.0",
+    "passport-google-oauth2": "^0.1.6",
+    "passport-google-oauth20": "^1.0.0",
     "passport-local": "^1.0.0",
-    "session": "^0.1.0"
+    "request": "^2.88.0",
+    "session": "^0.1.0",
+    "webclip": "^0.1.1"
   }
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+    <% include ../partials/header %>
+</header>
+
+<main>
+  <form method="post" action = "/process/login">
+      <table>
+          <tr>
+              <td><label>email address</label></td>
+              <td><input type="text" name="email"/></td>
+          </tr>
+          <tr>
+              <td><label>비밀번호</label></td>
+              <td><input type="password" name="password"/></td>
+          </tr>
+
+      </table>
+  <input type="submit" value="전송">
+  </form>
+  <a href="./adduser.html">회원가입</a>
+  <a class="google-btn" href="/process/google">Google+</a>
+
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
+
+<h1>log in page</h1>

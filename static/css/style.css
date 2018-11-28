@@ -1,0 +1,74 @@
+
+.content-wrapper{
+  display:grid;
+  grid-template-columns: 0.5fr 3fr 0.5fr 1.5fr 1.5fr 0.5fr;
+  grid-template-rows: 1fr 1fr 0.2fr;
+  grid-template-areas:
+  ". video . note note ."
+  ". script . note note ."
+  ". script . control control .";
+  /* background-color: green; */
+}
+.control-wrapper{
+  grid-area: control;
+}
+
+.video-wrapper{
+  grid-area: video;
+  height: 300px;
+  width: 650px;
+}
+
+.script-wrapper{
+  grid-area: script;
+}
+.script-place-holder{
+  height: 250px;
+  width: 650px;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.note-wrapper{
+  width: 100%;
+  height: 100%;
+  grid-area: note;
+  /* background-color: yellow; */
+  display: block;
+}
+
+.note-content{
+}
+
+.note-learn{
+  background-color: rgba(199, 32, 63);
+  display: block;
+  /* position: inherit; */
+  width: 120px;
+  height: 40px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+.note-want{
+  background-color: rgb(51, 105, 195);
+  display: block;
+  position: inherit;
+  width: 120px;
+  height: 40px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+
+}
+
+.submit-button{
+  width: 200px;
+}
+.submit{
+  display:none;
+}
+
+.bold{
+  font-weight: bold;
+}

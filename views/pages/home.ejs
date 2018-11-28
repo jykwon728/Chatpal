@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+    <% include ../partials/header %>
+</header>
+
+<main>
+    <div class="jumbotron">
+        <h1>The Orator club</h1>
+        <p>Welcome to your English training center</p>
+
+    </div>
+
+    <form  method="post" action="/process/login">
+        <table class="form-getBoundingClientRect">
+            <tr>
+                <td><label>이메일</label></td>
+                <td><input class="form-control mb-2 mr-sm-2" type="text" name="email"/></td>
+            </tr>
+            <tr>
+                <td><label>비밀번호</label></td>
+                <td><input class="form-control mb-2 mr-sm-2" type="password" name="password"/></td>
+            </tr>
+
+        </table>
+    <input class="btn btn-outline-primary" type="submit" value="로그인">
+
+    </form>
+
+    <a class="btn btn-outline-success" href="/process/google">Google 계정으로 로그인</a>
+    <br />
+
+    <button class="btn btn-outline-info" href="./adduser.html">회원가입</button>
+
+
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>

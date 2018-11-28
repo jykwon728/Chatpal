@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+
+    <link href="../../static/css/webclip.css" rel = "stylesheet" type="text/css" />
+    <link rel=stylesheet href="../../static/css/fontawesome.css"></link>
+    <link rel=stylesheet href="../../static/css/style.css"></link>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+</head>
+<body class="container">
+
+<header>
+    <!-- <% include ../partials/header %> -->
+</header>
+
+<main>
+  <div id="contentWrapper" class="content-wrapper">
+    <div id="controlWrapper" class="control-wrapper">
+      <button id="submitButton" class="btn btn-primary submit-button">단어장 확인</button>
+    </div>
+    <div id="videoWrapper" class="video-wrapper">
+      <div id="videoPlaceholder">
+
+      </div>
+    </div>
+
+    <div id="scriptWrapper" class="script-wrapper">
+      <div id="scriptPlaceholder" class="script-place-holder text-justify">
+      </div>
+    </div>
+    <div id="noteWrapper" class="note-wrapper container">
+      <form class="note-form" autocomplete="off" accept-charset="UTF-8" onsubmit=""  action="/profile/watchVideo/note" method="post" id="noteForm" >
+        <div id='noteContent' class="note-content">
+        </div>
+        <div id='noteControls' class="note-controls">
+          <!-- <button id="newWordButton" class="new-word-button">new word</button>
+          <button id="newExpressionButton" class="new-expression-button">new expression</button> -->
+          <input type="hidden" id="submitFormButton" type="submit" onclick="myFunction()" class="submit" value="Submit" />
+          <input type="hidden" id="vidIdfromQuery" value= <%=vidId%> name = "vidId"/>
+        </div>
+      </form>
+  <br/>
+    </div>
+  </div id="contentWrapper">
+</main>
+
+<footer>
+    <!-- <% include ../partials/footer %> -->
+</footer>
+
+<script src="../../static/js/jquery-3.1.1.js"></script>
+<script src="../../static/js/notepad_functions.js"></script>
+<script src="../../static/js/webclip.common.js"></script>
+<script>
+  var player;
+  function onYouTubeIframeAPIReady() {
+      player = new YT.Player('videoPlaceholder', {
+          width: 650,
+          height: 300,
+          videoId: '<%= vidId %>',
+          playerVars: {
+              autoplay: 0,
+              color: 'white',
+              controls:0,
+              rel:0,
+              iv_load_policy: 3,
+
+
+          },
+          events: {
+              onReady: makeScript,
+              // onStateChange:
+          }
+      });
+  }
+
+//bring in script's json file into the ejs
+  var loadedScript = <%- JSON.stringify(script) %>
+  var scriptFile = [loadedScript[0].script] //fix this[0]
+  var scriptFileArray = [...scriptFile[0]]
+
+function makeScript(){
+  for(i=0; i<scriptFileArray.length; i++){
+    $("#scriptPlaceholder").append("<p id=scriptSent"+i+" class= m-3  text-justify script-sent time="+scriptFileArray[i].startTime+"> </p> <br />")
+    $("#scriptSent"+i).text(scriptFileArray[i].content)
+   }
+}
+
+//function to skip to line's time
+$(".script-sent").on("click",function(){
+    player.seekTo($(this).attr('time'))
+  })
+
+$("#submitButton").on("click",function(){
+  console.log('submit button clicked')
+  $("#noteForm").submit()
+})
+
+</script>
+
+<script>
+var keyData = {};
+var learnData = {};
+var wantData = {};
+
+//make a fucntion that bolds the key sentences
+
+const pointKey = {
+  name: 'highlight',
+  description: 'Highlight content',
+  action: function(value, range) {
+
+    const $highlight = document.createElement('span')
+    $highlight.style.backgroundColor = 'rgba(0,0,0,.3)'
+    // or just add a class
+    // $highlight.classList.add('your-class')
+    range.surroundContents($highlight)
+    keyData = value
+    console.log('this is key: ' + keyData)
+    // $("#noteContent").append('<input id=key-input class=list-group-item active name=wordLearn value="'+keyData+'"></input>')
+
+
+  }
+}
+
+const pointLearn = {
+  name: '?pointLearn',
+  description: 'Highlight and save to learn',
+  // icon: 'question',
+  action: function(value, range) {
+
+    const $highlight = document.createElement('span')
+    $highlight.style.backgroundColor = 'rgba(199, 32, 63,.5)'
+    // or just add a class
+    // $highlight.classList.add('your-class')
+    range.surroundContents($highlight)
+    //append input element into note contentWrapper
+    $("#noteContent").append('<input id=word-input class=note-learn input-group-sm name=wordLearn value="'+value+'"></input>')
+      // $("#noteContent").append("<input id=comment-input class=input-comment name=wordCommentLearn placeholder=leave your comment></input>")
+
+    // learnData = value
+    // console.log('this is learn: ' + learnData)
+
+  }
+}
+const pointWant = {
+  name: '!pointWant',
+  description: 'Highlight and save to want',
+  action: function(value, range) {
+
+    const $highlight = document.createElement('span')
+    $highlight.style.backgroundColor = 'rgba(51, 105, 195,.3)'
+    // or just add a class
+    // $highlight.classList.add('your-class')
+    range.surroundContents($highlight)
+    //append input element into note contentWrapper
+    $("#noteContent").append('<input id=word-input class=note-want list-group-item active name=wordWant value="'+value+'"></input>')
+
+
+  }
+}
+var myScript = new WebClip(document.querySelector('#scriptWrapper'))
+myScript.use([pointKey, pointLearn, pointWant])
+
+
+
+</script>
+
+
+</body>
+</html>
